@@ -1,4 +1,8 @@
 node_modules
-.env*
+.env
 dist
 generated
+/generated/prisma.
+.agents
+.claude
+.windsurf
