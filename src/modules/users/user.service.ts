@@ -4,9 +4,9 @@ import { prisma } from "../../lib/prisma";
 import { RegisterUserPayload } from "./user.interface";
 
 
-const registerUserIntoDB = async (payload : RegisterUserPayload) =>{
-        const {name, email, password, profilePhoto} = payload
-     const isUserExist = await prisma.user.findUnique({
+const registerUserIntoDB = async (payload: RegisterUserPayload) => {
+    const { name, email, password, profilePhoto } = payload
+    const isUserExist = await prisma.user.findUnique({
         where: {
             email: email
         }
@@ -38,23 +38,35 @@ const registerUserIntoDB = async (payload : RegisterUserPayload) =>{
     //     }
     // })
 
-    const user =  await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
         where: {
             id: createdUser.id,
-            email: createdUser.email || email},
-            omit:{
-                password: true
-            },
-            include: {
-                profile: true
-            }
-        })
-        return user
+            email: createdUser.email || email
+        },
+        omit: {
+            password: true
+        },
+        include: {
+            profile: true
+        }
+    })
+    return user
 
 }
 
-const getMyProfileFromDB = async () => {
-
+const getMyProfileFromDB = async (userId: string) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            id: userId
+        },
+        omit: {
+            password: true
+        },
+        include: {
+            profile: true
+        }
+    })
+    return user
 }
 
 export const userService = {
