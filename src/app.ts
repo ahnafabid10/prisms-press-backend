@@ -2,7 +2,7 @@ import cookieParser from "cookie-parser";
 import express,{ Application, Request, Response } from "express";
 import cors from "cors";
 import config from "./config";
-import { userRoutes } from "./modules/users/user.route";
+import { userRoutes } from "./modules/user/user.route";
 import { authRoutes } from "./modules/Auth/auth.route";
 
 
