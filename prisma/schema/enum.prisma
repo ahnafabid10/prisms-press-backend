@@ -8,3 +8,15 @@ enum Role {
     AUTHOR
     ADMIN
 }   
+
+enum PostStatus {
+    PUBLISHED
+    DRAFT
+    ARCHIVED
+}
+
+enum CommentStatus {
+    PENDING
+    APPROVED
+    REJECTED
+}
