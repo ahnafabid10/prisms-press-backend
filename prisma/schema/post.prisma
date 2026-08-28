@@ -12,5 +12,5 @@ model Post {
 
     comments Comment[]
 
-    @@map("posts)
+    @@map("posts")
 }
