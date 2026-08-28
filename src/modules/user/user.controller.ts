@@ -3,7 +3,7 @@ import httpStatus from "http-status";
 import { userService } from "./user.service";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../../config";
 import { jwtUtils } from "../../utils/jwt";
 
@@ -28,13 +28,12 @@ const getMyProfile = catchAsync(async (req: Request, res: Response, next: NextFu
 
     const verifiedToken = jwtUtils.verifyToken(accessToken, config.jwt_access_token)
 
-    if(typeof verifiedToken === "string") {
-        throw new Error("Invalid token")
+    if (!verifiedToken.success || !verifiedToken.data) {
+        throw new Error(verifiedToken.message || "Invalid token")
     }
 
-    const profile = await userService.getMyProfileFromDB(verifiedToken.id)   
-
-    res.send("get my profile")
+    const userId = (verifiedToken.data as JwtPayload).id
+    const profile = await userService.getMyProfileFromDB(userId)   
 
     sendResponse(res, {
         success: true,
