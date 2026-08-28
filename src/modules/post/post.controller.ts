@@ -114,6 +114,17 @@ const getMyPosts = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getPostStats = catchAsync(async (req: Request, res: Response) => {
+  const result = await postService.getPostStatsFromDB();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Post statistics retrieved successfully",
+    data: result,
+  });
+});
+
 export const postController = {
   createPost,
   getAllPosts,
@@ -121,4 +132,5 @@ export const postController = {
   updatePost,
   deletePost,
   getMyPosts,
+  getPostStats,
 };

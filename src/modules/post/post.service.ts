@@ -212,6 +212,36 @@ const getMyPostsFromDB = async (userId: string, options: IPaginationOptions) => 
   return getAllPostsFromDB({ authorId: userId }, options);
 };
 
+const getPostStatsFromDB = async () => {
+  const totalPosts = await prisma.post.count();
+  const publishedPosts = await prisma.post.count({
+    where: { status: "PUBLISHED" },
+  });
+  const draftPosts = await prisma.post.count({
+    where: { status: "DRAFT" },
+  });
+  const archivedPosts = await prisma.post.count({
+    where: { status: "ARCHIVED" },
+  });
+
+  const viewsAggregate = await prisma.post.aggregate({
+    _sum: {
+      views: true,
+    },
+  });
+
+  const totalComments = await prisma.comment.count();
+
+  return {
+    totalPosts,
+    publishedPosts,
+    draftPosts,
+    archivedPosts,
+    totalViews: viewsAggregate._sum.views || 0,
+    totalComments,
+  };
+};
+
 export const postService = {
   createPostInDB,
   getAllPostsFromDB,
@@ -219,4 +249,5 @@ export const postService = {
   updatePostInDB,
   deletePostInDB,
   getMyPostsFromDB,
+  getPostStatsFromDB,
 };
